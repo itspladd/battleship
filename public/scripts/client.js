@@ -7,4 +7,6 @@ refresh.addEventListener('submit', (event) => {
   game.innerHTML = '<h1>HOWDY</h1>';
 })
 
+
+
 game.innerHTML = '<strong>hi</strong>';

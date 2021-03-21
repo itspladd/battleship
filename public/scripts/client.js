@@ -11,8 +11,9 @@ refresh.addEventListener('submit', (event) => {
 
 login.addEventListener('submit', (event) => {
   event.preventDefault();
-  if (nameField.value) {
-    game.innerHTML = `<p>${nameField.value}</p>`;
+  username = nameField.value;
+  if (username) {
+    socket.emit('user login', username);
   }
 })
 

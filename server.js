@@ -12,12 +12,17 @@ const engine = new GameEngine();
 // Set the path for static files.
 app.use(express.static('public'));
 
-io.on('connection', (socket) => {
+io.on('connection', socket => {
   console.log('connected!');
+  
+  // Add this socket to the list of people currently at the site
   engine.trackSocket(socket);
+  
+  socket.on('user login', username => {
+    console.log('new user: ', username);
+  })
 });
 
-io.on()
 
 http.listen(PORT, () => {
   console.log(`Battleship app listening on port ${PORT}:`)

@@ -5,7 +5,7 @@ class GameEngine {
     this.players = {};
   }
 
-  addPlayer(socket) {
+  trackPlayer(socket) {
     if (!this.players[socket.id]) {
       this.players[socket.id] = socket;
       console.log('added')

@@ -14,8 +14,10 @@ app.use(express.static('public'));
 
 io.on('connection', (socket) => {
   console.log('connected!');
-  engine.addPlayer(socket);
+  engine.trackSocket(socket);
 });
+
+io.on()
 
 http.listen(PORT, () => {
   console.log(`Battleship app listening on port ${PORT}:`)

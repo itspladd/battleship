@@ -18,15 +18,22 @@ login.addEventListener('submit', (event) => {
   }
 });
 
-socket.on('user list', msg => {
-  console.log(msg);
+socket.on('user list', userList => {
+  userList.forEach(username => {
+    users.appendChild(makeUserListItem(username));
+
+  });
 })
 
 socket.on('user joined', username => {
+  users.appendChild(makeUserListItem(username));
+});
+
+const makeUserListItem = username => {
   const user = document.createElement('li');
   user.setAttribute('id', username);
   user.textContent = username;
-  users.appendChild(user);
-});
+  return user;
+};
 
 game.innerHTML = '<strong>hi</strong>';

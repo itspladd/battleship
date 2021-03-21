@@ -14,6 +14,8 @@ app.use(express.static('public'));
 
 io.on('connection', socket => {
   console.log('connected!');
+
+  socket.emit('hello', 'You just joined!');
   
   // Add this socket to the list of sockets currently at the site
   try {

@@ -18,6 +18,10 @@ login.addEventListener('submit', (event) => {
   }
 });
 
+socket.on('hello', msg => {
+  console.log(msg);
+})
+
 socket.on('user joined', username => {
   const user = document.createElement('li');
   user.setAttribute('id', username);

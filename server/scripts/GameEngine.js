@@ -11,7 +11,6 @@ class GameEngine {
     const id = socket.id;
     if (!this.players[id]) {
       this.players[id] = { id };
-      console.log(`players contains:`, this.players);
     } else {
       throw new Error('Duplicate socket attempted');
     }
@@ -19,7 +18,6 @@ class GameEngine {
 
   attachPlayerToSocket(socket, username) {
     try {
-      console.log(`attempting to attach ${username} to ${socket.id}`)
       this.players[socket.id]['username'] = username;
     } catch (e) {
       console.log(e);

@@ -28,7 +28,6 @@ io.on('connection', socket => {
   // When this socket logs in, send their name to the list of users.
   socket.on('login attempt', username => {
     io.emit('user joined', username);
-    console.log('emitted user join event')
     engine.attachPlayerToSocket(socket, username);
   });
 });

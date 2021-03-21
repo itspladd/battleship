@@ -1,5 +1,6 @@
 const socket = io();
 const game = document.getElementById('game');
+const users = document.getElementById('users');
 const refresh = document.getElementById('refresh');
 const login = document.getElementById('loginForm')
 const nameField = document.getElementById('inputName');
@@ -7,14 +8,21 @@ const nameField = document.getElementById('inputName');
 refresh.addEventListener('submit', (event) => {
   event.preventDefault();
   game.innerHTML = '<h1>HOWDY</h1>';
-})
+});
 
 login.addEventListener('submit', (event) => {
   event.preventDefault();
   username = nameField.value;
   if (username) {
-    socket.emit('user login', username);
+    socket.emit('login attempt', username);
   }
-})
+});
+
+socket.on('user joined', username => {
+  const user = document.createElement('li');
+  user.setAttribute('id', username);
+  user.textContent = username;
+  users.appendChild(user);
+});
 
 game.innerHTML = '<strong>hi</strong>';

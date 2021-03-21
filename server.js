@@ -23,8 +23,11 @@ io.on('connection', socket => {
     console.log(e);
   }
   
-  socket.on('user login', username => {
-    console.log('new user: ', username);
+  // When this socket logs in, send their name to the list of users.
+  socket.on('login attempt', username => {
+    io.emit('user joined', username);
+    console.log('emitted user join event')
+    // TODO: Associate this player's account with their socket in the engine.
   })
 });
 

@@ -9,7 +9,14 @@
 </head>
 <body>
   <div id="game"></div>
-  <form id="refresh" style="position:absolute; bottom:0; margin: 1em"><button>Refresh all</button></form>
+  <form id="refresh" style="bottom:0; margin: 1em">
+    <button>Refresh</button>
+  </form>
+ 
+  <form id="loginForm" style="bottom:0; margin: 1em">
+    <input type="text" id="inputName"></input>
+    <button>Log In</button>
+  </form>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/scripts/client.js"></script>
 </body>

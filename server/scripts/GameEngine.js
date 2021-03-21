@@ -5,10 +5,10 @@ class GameEngine {
     this.players = {};
   }
 
-  trackPlayer(socket) {
+  trackSocket(socket) {
     if (!this.players[socket.id]) {
       this.players[socket.id] = socket;
-      console.log('added')
+      console.log('socket added')
     } else {
       console.log('duplicate player attempted');
     }

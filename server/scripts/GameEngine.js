@@ -5,12 +5,14 @@ class GameEngine {
     this.players = {};
   }
 
+
+  // Add a socket to the list of sockets tracked by the site.
   trackSocket(socket) {
     if (!this.players[socket.id]) {
       this.players[socket.id] = socket;
       console.log('socket added')
     } else {
-      console.log('duplicate player attempted');
+      throw new Error('Duplicate socket attempted');
     }
   }
 }

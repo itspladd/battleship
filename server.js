@@ -15,8 +15,13 @@ app.use(express.static('public'));
 io.on('connection', socket => {
   console.log('connected!');
   
-  // Add this socket to the list of people currently at the site
-  engine.trackSocket(socket);
+  // Add this socket to the list of sockets currently at the site
+  try {
+    engine.trackSocket(socket);
+  } catch (e) {
+    // TODO: Log the error somewhere else.
+    console.log(e);
+  }
   
   socket.on('user login', username => {
     console.log('new user: ', username);

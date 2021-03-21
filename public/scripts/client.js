@@ -18,7 +18,7 @@ login.addEventListener('submit', (event) => {
   }
 });
 
-socket.on('hello', msg => {
+socket.on('user list', msg => {
   console.log(msg);
 })
 

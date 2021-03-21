@@ -15,7 +15,7 @@ app.use(express.static('public'));
 io.on('connection', socket => {
   console.log('connected!');
 
-  socket.emit('hello', 'You just joined!');
+  socket.emit('user list', engine.playerNames);
   
   // Add this socket to the list of sockets currently at the site
   try {
@@ -29,8 +29,8 @@ io.on('connection', socket => {
   socket.on('login attempt', username => {
     io.emit('user joined', username);
     console.log('emitted user join event')
-    // TODO: Associate this player's account with their socket in the engine.
-  })
+    engine.attachPlayerToSocket(socket, username);
+  });
 });
 
 

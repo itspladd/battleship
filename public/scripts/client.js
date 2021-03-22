@@ -1,11 +1,11 @@
 const socket = io();
 const game = document.getElementById('game');
 const users = document.getElementById('users');
-const refresh = document.getElementById('refresh');
+const debug = document.getElementById('debug');
 const login = document.getElementById('loginForm')
 const nameField = document.getElementById('inputName');
 
-refresh.addEventListener('submit', (event) => {
+debug.addEventListener('click', (event) => {
   event.preventDefault();
   game.innerHTML = '<h1>HOWDY</h1>';
 });

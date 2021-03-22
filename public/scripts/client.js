@@ -23,7 +23,7 @@ socket.on('user list', userList => {
     users.appendChild(makeUserListItem(username));
 
   });
-})
+});
 
 socket.on('user joined', username => {
   users.appendChild(makeUserListItem(username));
@@ -32,8 +32,9 @@ socket.on('user joined', username => {
 const makeUserListItem = username => {
   const user = document.createElement('li');
   user.setAttribute('id', username);
+  user.setAttribute('class', 'list-group-item');
   user.textContent = username;
   return user;
 };
 
-game.innerHTML = '<strong>hi</strong>';
+game.innerHTML = '<strong>Game area</strong>';

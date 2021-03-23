@@ -36,6 +36,11 @@ io.on('connection', socket => {
     }
   });
 
+  socket.on('request board update', () => {
+    console.log('update requested, sending: ', engine.board);
+    socket.emit('board update', engine.board);
+  })
+
   socket.on('disconnect', () => {
     if (engine.socketHasUsername(socket)) {
       io.emit('user left', engine.players[socket.id].username);

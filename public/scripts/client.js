@@ -7,12 +7,7 @@ const nameField = document.getElementById('inputName');
 
 debug.addEventListener('click', (event) => {
   event.preventDefault();
-  const boardObj = { tiles: [
-    ['1a', '1b', '1c'],
-    ['2a', '2b', '2c'],
-    ['3a', '3b', '3c']
-  ] };
-  drawBoard(boardObj)
+  socket.emit('request board update');
 });
 
 login.addEventListener('submit', (event) => {
@@ -54,11 +49,11 @@ socket.on('board update', board => {
  * drawBoard
  * Given a Board object, draw the appropriate divs in the game area.
  */
-const drawBoard = boardObj => {
+const drawBoard = board => {
 
-  const board = document.getElementById('board');
+  const boardDiv = document.getElementById('board');
 
-  for (const row of boardObj.tiles) {
+  for (const row of board.tiles) {
     const rowDiv = document.createElement('div');
     rowDiv.setAttribute('class', 'row');
     for (const tile of row) {
@@ -67,7 +62,7 @@ const drawBoard = boardObj => {
       tileDiv.innerHTML = tile;
       rowDiv.appendChild(tileDiv);
     }
-    board.appendChild(rowDiv);
+    boardDiv.appendChild(rowDiv);
   }
 };
 

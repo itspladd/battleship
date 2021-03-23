@@ -1,3 +1,5 @@
+const Board = require('./Board');
+
 class GameEngine {
 
   /****
@@ -34,8 +36,23 @@ class GameEngine {
   constructor() {
     // Players are tracked by their socket ID.
     this.players = {};
+    this.rulesets = this.loadRulesets();
+    this.rules = this.configureRules();
+    this.board = this.setupBoard(this.rules);
   }
 
+  loadRulesets() {
+    return require('../constants/rulesets');
+  }
+
+  // For now, just set the default ruleset.
+  configureRules() {
+    return this.rulesets.defaultRuleset;
+  }
+
+  setupBoard(rules) {
+    return new Board(rules.boardType);
+  }
 
   // Add a socket ID to the list of sockets tracked by the engine.
   trackSocket(socket) {

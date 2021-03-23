@@ -2,7 +2,7 @@ const socket = io();
 const game = document.getElementById('game');
 const users = document.getElementById('users');
 const debug = document.getElementById('debug');
-const login = document.getElementById('loginForm')
+const login = document.getElementById('loginForm');
 const nameField = document.getElementById('inputName');
 
 debug.addEventListener('click', (event) => {
@@ -30,13 +30,25 @@ socket.on('user list', userList => {
   });
 });
 
+socket.on('login successful', () => {
+  login.remove();
+});
+
 socket.on('user joined', username => {
   users.appendChild(makeUserListItem(username));
+});
+
+socket.on('user left', username => {
+  document.getElementById(username).remove();
 });
 
 socket.on('board update', board => {
   drawBoard(board);
 })
+
+/***********************
+ * HELPER FUNCTIONS
+ ***********************/
 
 /**
  * drawBoard
@@ -51,7 +63,7 @@ const drawBoard = boardObj => {
     rowDiv.setAttribute('class', 'row');
     for (const tile of row) {
       const tileDiv = document.createElement('div');
-      tileDiv.setAttribute('class', 'col border-info');
+      tileDiv.setAttribute('class', 'col bg-info');
       tileDiv.innerHTML = tile;
       rowDiv.appendChild(tileDiv);
     }

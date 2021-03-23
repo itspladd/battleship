@@ -47,6 +47,11 @@ class GameEngine {
     }
   }
 
+  // Remove a player from the list.
+  removeSocket(socket) {
+    delete this.players[socket.id];
+  }
+
   // Attach a player to that user's socket.
   attachPlayerToSocket(socket, username) {
     try {
@@ -54,6 +59,11 @@ class GameEngine {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  // Check if a given socket has a username attached.
+  socketHasUsername(socket) {
+    return this.players[socket.id].username ? true : false;
   }
 
   get playerNames() {

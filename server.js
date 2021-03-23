@@ -4,6 +4,7 @@ const GameEngine = require('./server/scripts/GameEngine');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const hlp = require('./server/scripts/serverHelpers');
 
 const PORT = 8080;
 
@@ -26,9 +27,20 @@ io.on('connection', socket => {
   }
   
   // When this socket logs in, send their name to the list of users.
+  // TODO: Flesh out user validation.
   socket.on('login attempt', username => {
-    io.emit('user joined', username);
-    engine.attachPlayerToSocket(socket, username);
+    if (hlp.validateUser(username)) {
+      engine.attachPlayerToSocket(socket, username);
+      socket.emit('login successful');
+      io.emit('user joined', username);
+    }
+  });
+
+  socket.on('disconnect', () => {
+    if (engine.socketHasUsername(socket)) {
+      io.emit('user left', engine.players[socket.id].username);
+    }
+    engine.removeSocket(socket);
   });
 });
 

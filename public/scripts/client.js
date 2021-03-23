@@ -7,7 +7,12 @@ const nameField = document.getElementById('inputName');
 
 debug.addEventListener('click', (event) => {
   event.preventDefault();
-  game.innerHTML = '<h1>HOWDY</h1>';
+  const boardObj = { tiles: [
+    ['1a', '1b', '1c'],
+    ['2a', '2b', '2c'],
+    ['3a', '3b', '3c']
+  ] };
+  drawBoard(boardObj)
 });
 
 login.addEventListener('submit', (event) => {
@@ -29,6 +34,31 @@ socket.on('user joined', username => {
   users.appendChild(makeUserListItem(username));
 });
 
+socket.on('board update', board => {
+  drawBoard(board);
+})
+
+/**
+ * drawBoard
+ * Given a Board object, draw the appropriate divs in the game area.
+ */
+const drawBoard = boardObj => {
+
+  const board = document.getElementById('board');
+
+  for (const row of boardObj.tiles) {
+    const rowDiv = document.createElement('div');
+    rowDiv.setAttribute('class', 'row');
+    for (const tile of row) {
+      const tileDiv = document.createElement('div');
+      tileDiv.setAttribute('class', 'col border-info');
+      tileDiv.innerHTML = tile;
+      rowDiv.appendChild(tileDiv);
+    }
+    board.appendChild(rowDiv);
+  }
+};
+
 /**
  * makeUserListItem
  * Helper function that adds an 'li' element to the Users list given a username 
@@ -41,5 +71,3 @@ const makeUserListItem = username => {
   user.textContent = username;
   return user;
 };
-
-game.innerHTML = '<strong>Game area</strong>';

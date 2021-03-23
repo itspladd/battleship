@@ -29,6 +29,11 @@ socket.on('user joined', username => {
   users.appendChild(makeUserListItem(username));
 });
 
+/**
+ * makeUserListItem
+ * Helper function that adds an 'li' element to the Users list given a username 
+ */
+
 const makeUserListItem = username => {
   const user = document.createElement('li');
   user.setAttribute('id', username);

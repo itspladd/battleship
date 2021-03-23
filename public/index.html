@@ -11,38 +11,36 @@
   
 </head>
 <body>
-  <div class="container">
-    <div class="row">
-      <div class="col-10" id="game">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <div class="col bg-primary" id="game">
 
       </div>
-      <div class="col-2 bg-light">
-          <h5>Users</h5>
-          <ul id="users" class="list-group list-group-flush"></ul>
+
+      <div class="col-md-auto bg-light">
+        <form id="loginForm" class="form-inline m1">
+          <input type="text" id="inputName"></input>
+          <button>Log In</button>
+        </form>
+        <h5>Users</h5>
+        <ul id="users" class="list-group list-group-flush"></ul>
       </div>
     </div>
+    
+    <!-- UI buttons -->
   </div>
 
-  <!-- UI buttons -->
-  <div class="container">
-    <form id="loginForm" style="bottom:0; margin: 1em">
-      <input type="text" id="inputName"></input>
-      <button>Log In</button>
-    </form>
-  </div>
+
 
   <!-- Dev/ debugging buttons -->
   <footer class="footer bg-danger">
+
     <div class="container">
       Debug tools:
       <button id="debug" class="btn btn-warning">Debug</button>
     </div>
   </footer>
  
-
-
-
-
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
   <!-- socket.io client-side JS -->

@@ -37,7 +37,6 @@ io.on('connection', socket => {
   });
 
   socket.on('request board update', () => {
-    console.log('update requested, sending: ', engine.board);
     socket.emit('board update', engine.board);
   })
 

@@ -37,7 +37,7 @@ io.on('connection', socket => {
   });
 
   socket.on('request board update', () => {
-    socket.emit('board update', engine.board);
+    socket.emit('board update', engine.board.tiles);
   })
 
   socket.on('disconnect', () => {

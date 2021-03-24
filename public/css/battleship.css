@@ -52,5 +52,6 @@ body {
 .tile {
   width: 3em;
   height: 3em;
+  background-color: cyan;
   border: 1px solid rgb(61, 91, 145);
 }

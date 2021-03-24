@@ -1,6 +1,7 @@
 $( document ).ready( function() {
   const socket = io();
   const $game = $('#game');
+  const $board = $('.board');
   const $users = $('#users');
   const $debug = $('#debug');
   const $login = $('#loginForm');
@@ -38,32 +39,8 @@ $( document ).ready( function() {
     $login.remove();
   });
   
-  socket.on('board update', board => {
-    drawBoard(board);
-  })
+  socket.on('board update', tiles => {
+    drawBoard(tiles, $board);
+  });
 
-
-
-
-  /***********************
-   * HELPER FUNCTIONS
-   ***********************/
-
-  /**
-   * drawBoard
-   * Given a Board object, draw the appropriate divs in the game area.
-   */
-  const drawBoard = board => {
-
-    const $boardDiv = $('.board');
-
-    for (const row of board.tiles) {
-      const $rowDiv = $('<div class="row"/>');
-      for (const tile of row) {
-        const $tileDiv = $(`<div class="tile">${tile}</div>`);
-        $rowDiv.append($tileDiv);
-      }
-      $boardDiv.append($rowDiv);
-    }
-  };
 });

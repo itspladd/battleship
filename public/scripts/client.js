@@ -1,80 +1,69 @@
-const socket = io();
-const game = document.getElementById('game');
-const users = document.getElementById('users');
-const debug = document.getElementById('debug');
-const login = document.getElementById('loginForm');
-const nameField = document.getElementById('inputName');
+$( document ).ready( function() {
+  const socket = io();
+  const $game = $('#game');
+  const $users = $('#users');
+  const $debug = $('#debug');
+  const $login = $('#loginForm');
+  const $nameField = $('#inputName');
 
-debug.addEventListener('click', (event) => {
-  event.preventDefault();
-  socket.emit('request board update');
-});
-
-login.addEventListener('submit', (event) => {
-  event.preventDefault();
-  username = nameField.value;
-  if (username) {
-    socket.emit('login attempt', username);
-  }
-});
-
-socket.on('user list', userList => {
-  userList.forEach(username => {
-    users.appendChild(makeUserListItem(username));
-
+  $debug.click(event => {
+    event.preventDefault();
+    socket.emit('request board update');
   });
-});
-
-socket.on('login successful', () => {
-  login.remove();
-});
-
-socket.on('user joined', username => {
-  users.appendChild(makeUserListItem(username));
-});
-
-socket.on('user left', username => {
-  document.getElementById(username).remove();
-});
-
-socket.on('board update', board => {
-  drawBoard(board);
-})
-
-/***********************
- * HELPER FUNCTIONS
- ***********************/
-
-/**
- * drawBoard
- * Given a Board object, draw the appropriate divs in the game area.
- */
-const drawBoard = board => {
-
-  const boardDiv = document.getElementById('board');
-
-  for (const row of board.tiles) {
-    const rowDiv = document.createElement('div');
-    rowDiv.setAttribute('class', 'row');
-    for (const tile of row) {
-      const tileDiv = document.createElement('div');
-      tileDiv.setAttribute('class', 'col bg-info');
-      tileDiv.innerHTML = tile;
-      rowDiv.appendChild(tileDiv);
+  
+  $login.submit(event => {
+    event.preventDefault();
+    username = $nameField.val();
+    if (username) {
+      socket.emit('login attempt', username);
     }
-    boardDiv.appendChild(rowDiv);
-  }
-};
+  });
 
-/**
- * makeUserListItem
- * Helper function that adds an 'li' element to the Users list given a username 
- */
+  socket.on('user list', userList => {
+    userList.forEach(username => {
+      $users.append($(`<li id="${username}">${username}</li>`));
+    });
+  });
+  
+  socket.on('user joined', username => {
+    $users.append($(`<li id="${username}">${username}</li>`));
+  });
+  
+  socket.on('user left', username => {
+    $(`#${username}`).remove();
+  });
 
-const makeUserListItem = username => {
-  const user = document.createElement('li');
-  user.setAttribute('id', username);
-  user.setAttribute('class', 'list-group-item');
-  user.textContent = username;
-  return user;
-};
+  // Remove login button once the client has successfully logged in
+  socket.on('login successful', () => {
+    $login.remove();
+  });
+  
+  socket.on('board update', board => {
+    drawBoard(board);
+  })
+
+
+
+
+  /***********************
+   * HELPER FUNCTIONS
+   ***********************/
+
+  /**
+   * drawBoard
+   * Given a Board object, draw the appropriate divs in the game area.
+   */
+  const drawBoard = board => {
+
+    const $boardDiv = $('.board');
+
+    for (const row of board.tiles) {
+      const $rowDiv = $('<div class="row"/>');
+      for (const tile of row) {
+        const $tileDiv = $(`<div class="tile">${tile}</div>`);
+        $rowDiv.append($tileDiv);
+      }
+      $boardDiv.append($rowDiv);
+    }
+  };
+});

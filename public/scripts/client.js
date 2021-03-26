@@ -36,7 +36,7 @@ $( document ).ready( function() {
 
   // Remove login button once the client has successfully logged in
   socket.on('login successful', () => {
-    $login.remove();
+    $login.hide();
   });
   
   socket.on('board update', tiles => {

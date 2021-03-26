@@ -10,8 +10,15 @@ const PORT = 8080;
 
 const engine = new GameEngine();
 
+const db = require('./server/scripts/database');
+const DataHelpers = require('./server/scripts/dataHelpers.js')(db);
+
 // Set the path for static files.
 app.use(express.static('public'));
+
+app.get('/players', (req, res) => {
+  res.send(db.players);
+});
 
 io.on('connection', socket => {
   console.log('connected!');
@@ -21,20 +28,29 @@ io.on('connection', socket => {
   // Add this socket to the list of sockets currently at the site
   try {
     engine.trackSocket(socket);
-  } catch (e) {
+  } catch (err) {
     // TODO: Log the error somewhere else.
-    console.log(e);
+    DataHelpers.logError(err);
   }
   
   // When this socket logs in, send their name to the list of users.
   // TODO: Flesh out user validation.
   socket.on('login attempt', username => {
     if (hlp.validateUser(username)) {
-      engine.attachPlayerToSocket(socket, username);
-      socket.emit('login successful');
-      io.emit('user joined', username);
+      const id = 'p2345';
+      const email = 'test@example.beans';
+      const password = 'badpassword';
+      const gameHistory = [];
+      DataHelpers.savePlayer({ id, username, email, password, gameHistory })
+      .then( () => {
+        engine.attachPlayerToSocket(socket, username);
+        socket.emit('login successful');
+        io.emit('user joined', username);
+      }).catch(err => DataHelpers.logError(err));
     }
   });
+
+
 
   socket.on('request board update', () => {
     socket.emit('board update', engine.board.tiles);

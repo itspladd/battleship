@@ -23,6 +23,7 @@ const database = {
   rulesets: {
     default: {
       board: 'default',
+      players: 2,
     }
   },
   usernames: [],

@@ -4,6 +4,7 @@ $( document ).ready( function() {
   const $board = $('.board');
   const $users = $('#users');
   const $debug = $('#debug');
+  const $stepForward = $('#stepForward');
   const $login = $('#loginForm');
   const $nameField = $('#inputName');
 
@@ -11,6 +12,11 @@ $( document ).ready( function() {
     event.preventDefault();
     socket.emit('request board update');
   });
+
+  $stepForward.click(event => {
+    event.preventDefault();
+    socket.emit('step forward');
+  })
   
   $login.submit(event => {
     event.preventDefault();
@@ -42,5 +48,7 @@ $( document ).ready( function() {
   socket.on('board update', tiles => {
     drawBoard(tiles, $board);
   });
+
+  socket.on('tracked', () => alert('tracked!'));
 
 });

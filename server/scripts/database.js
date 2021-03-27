@@ -1,7 +1,7 @@
 // Dummy in-memory database, to be replaced once I get some DB practice.
 const database = {
   players: {
-    'p123': {
+    'p0': {
       id: 'p123',
       username: 'Pladd',
       email: 'contact@itspladd.com',
@@ -9,7 +9,7 @@ const database = {
       gameHistory: [], // Array of game IDs
     },
   },
-  games: {
+  pastGames: {
     'g123': {
       ruleset: {},
       moves: [],

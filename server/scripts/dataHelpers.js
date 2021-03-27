@@ -91,9 +91,14 @@ module.exports = function makeDataHelpers(db) {
     logError: function(error) {
       return new Promise( (resolve, reject) => {
         console.log('error encountered. logging...');
+        // Time error thrown
+        const time = Date.now();
         // Simulating a slight delay, replace the timeout with the db interaction
         setTimeout( () => {
-          db.errors.push({...error}); // Pass in all key/value pairs
+          const err = error.toString();
+          const rawTrace = error.stack || 'no stack available\n';
+          const trace = rawTrace.split('\n').filter(str => str !== '');
+          db.errors.push({time, err, trace}); // Pass in all key/value pairs
           resolve('Error logged.');
         }, 100);
       })

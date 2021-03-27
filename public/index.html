@@ -13,8 +13,9 @@
   <!-- socket.io client-side JS -->
   <script src="/socket.io/socket.io.js"></script>
   <!-- Client-side game driver -->
-  <script src="/scripts/client.js"></script>
   <script src="/scripts/helpers.js"></script>
+  <script src="/scripts/devTools.js"></script>
+  <script src="/scripts/client.js"></script>
 
   <title>Battleship</title>
   
@@ -36,11 +37,13 @@
 
   <!-- Dev/ debugging buttons -->
   <footer class="footer">
-    Debug tools:
-    <button id="debug" class="btn btn-warning">Debug</button>
-    <button id="startGame" class="btn btn-warning">start game</button>
+    Dev tools:
+    <button id="debug_updateBoard" class="btn btn-warning">Debug</button>
+    <button id="debug_startGame" class="btn btn-warning">start game</button>
 
-    <button id="register" class="btn btn-warning">register user</button>
+    <button id="debug_register" class="btn btn-warning">register user</button>
+    <button id="debug_login1" class="btn btn-warning">login Pladd</button>
+    <button id="debug_login2" class="btn btn-warning">login Trapezius</button>
   </footer>
   
 

@@ -3,16 +3,13 @@ $( document ).ready( function() {
   const $game = $('#game');
   const $board = $('.board');
   const $users = $('#users');
-  const $debug = $('#debug');
   const $startGame = $('#stepForward');
   const $login = $('#loginForm');
   const $register = $('#register');
   const $nameField = $('#inputName');
+  const devTools = initDevTools(socket);
 
-  $debug.click(event => {
-    event.preventDefault();
-    socket.emit('request board update');
-  });
+
 
   $startGame.click(event => {
     event.preventDefault();

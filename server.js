@@ -22,7 +22,11 @@ const loggedInUsers = {};
 app.use(express.static('public'));
 
 app.get('/players', (req, res) => {
-  res.send(db.players);
+  res.json(db.players);
+});
+
+app.get('/errors', (req, res) => {
+  res.json(db.errors);
 });
 
 io.on('connection', socket => {
@@ -65,7 +69,11 @@ io.on('connection', socket => {
   });
 
   socket.on('request board update', () => {
-    socket.emit('board update', engine.board.tiles);
+    try {
+      socket.emit('board update', engine.board.tiles);
+    } catch (e) {
+      DataHelpers.logError(e);
+    }
   });
 
   socket.on('disconnect', () => {

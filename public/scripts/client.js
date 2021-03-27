@@ -4,8 +4,9 @@ $( document ).ready( function() {
   const $board = $('.board');
   const $users = $('#users');
   const $debug = $('#debug');
-  const $stepForward = $('#stepForward');
+  const $startGame = $('#stepForward');
   const $login = $('#loginForm');
+  const $register = $('#register');
   const $nameField = $('#inputName');
 
   $debug.click(event => {
@@ -13,7 +14,7 @@ $( document ).ready( function() {
     socket.emit('request board update');
   });
 
-  $stepForward.click(event => {
+  $startGame.click(event => {
     event.preventDefault();
     socket.emit('step forward');
   })
@@ -23,6 +24,14 @@ $( document ).ready( function() {
     username = $nameField.val();
     if (username) {
       socket.emit('login attempt', username);
+    }
+  });
+
+  $register.click(event => {
+    event.preventDefault();
+    const username = $nameField.val();
+    if (username) {
+      socket.emit('registration attempt', { username });
     }
   });
 
@@ -43,6 +52,10 @@ $( document ).ready( function() {
   // Remove login button once the client has successfully logged in
   socket.on('login successful', () => {
     $login.hide();
+  });
+
+  socket.on('registration successful', () => {
+    console.log('Successfully registered!');
   });
   
   socket.on('board update', tiles => {

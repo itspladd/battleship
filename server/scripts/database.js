@@ -2,10 +2,17 @@
 const database = {
   players: {
     'p0': {
-      id: 'p123',
+      id: 'p0',
       username: 'Pladd',
       email: 'contact@itspladd.com',
       password: 'baconator', // TODO: Hash it
+      gameHistory: [], // Array of game IDs
+    },
+    'p1': {
+      id: 'p1',
+      username: 'Trapezius Stoneglutes',
+      email: 'contact@petalsworn.death.clan',
+      password: 'g0dde$$_K1ng', // TODO: Hash it
       gameHistory: [], // Array of game IDs
     },
   },

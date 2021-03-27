@@ -8,10 +8,15 @@ const hlp = require('./server/scripts/serverHelpers');
 
 const PORT = 8080;
 
-const engine = new GameEngine();
-
 const db = require('./server/scripts/database');
 const DataHelpers = require('./server/scripts/dataHelpers.js')(db);
+
+// Set up game engine - this will eventually get moved into
+// its own space.
+const games = {};
+
+// Track all active connections
+const loggedInUsers = {};
 
 // Set the path for static files.
 app.use(express.static('public'));
@@ -22,45 +27,51 @@ app.get('/players', (req, res) => {
 
 io.on('connection', socket => {
   console.log('connected!');
-
-  socket.emit('user list', engine.playerNames);
-  
-  // Add this socket to the list of sockets currently at the site
-  try {
-    engine.trackSocket(socket);
-  } catch (err) {
-    // TODO: Log the error somewhere else.
-    DataHelpers.logError(err);
-  }
+  //socket.emit('user list', engine.playerNames);
   
   // When this socket logs in, send their name to the list of users.
   // TODO: Flesh out user validation.
   socket.on('login attempt', username => {
-    if (hlp.validateUser(username)) {
-      const id = 'p2345';
-      const email = 'test@example.beans';
-      const password = 'badpassword';
-      const gameHistory = [];
-      DataHelpers.savePlayer({ id, username, email, password, gameHistory })
-      .then( () => {
-        engine.attachPlayerToSocket(socket, username);
-        socket.emit('login successful');
-        io.emit('user joined', username);
-      }).catch(err => DataHelpers.logError(err));
+    if (DataHelpers.validateLogin(username)) {
+      
+      loggedInUsers[socket.id] = username;
+      socket.emit('login successful');
+      io.emit('user joined', username);
     }
   });
 
+  socket.on('registration attempt', data => {
+    console.log(`registering`, data)
+    const id = hlp.randomUserId();
+    const username = data.username;
+    const email = 'test@example.beans';
+    const password = 'badpassword';
+    const gameHistory = [];
+    const profile = { username, id, email, password, gameHistory }
+    DataHelpers.validateRegistration(profile)
+    .then(profile => DataHelpers.savePlayer(profile))
+    .then(() => {
+      loggedInUsers[socket.id] = profile.id;
+      socket.emit('registration successful');
+    })
+    .catch(err => console.log(err));
+  });
 
+  // Create and track a new game with the socket as the host.
+  socket.on('new game', () => {
+    const engine = new GameEngine(DataHelpers, socket);
+    const id = games.length;
+    games[id] = {id, engine};
+  });
 
   socket.on('request board update', () => {
     socket.emit('board update', engine.board.tiles);
-  })
+  });
 
   socket.on('disconnect', () => {
-    if (engine.socketHasUsername(socket)) {
-      io.emit('user left', engine.players[socket.id].username);
+    if (loggedInUsers[socket.id]) {
+      io.emit('user left', loggedInUsers[socket.id].username);
     }
-    engine.removeSocket(socket);
   });
 });
 

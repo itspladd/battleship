@@ -33,13 +33,12 @@ class GameEngine {
    * 
    */
   
-  constructor() {
+  constructor(DataHelpers, socket) {
     // Players are tracked by their socket ID.
     this.pollFrequency = 1000; // How often to poll, in ms
     this.timeoutDuration = 300; // How long till timeout, in s
+    this.db = DataHelpers;
     this.players = {};
-    this.rulesets = this.loadRulesets();
-    this.rules = this.configureRules();
     // Wait for players, then
     // Get both players to set up boards, then
     // Choose first player, then
@@ -51,19 +50,25 @@ class GameEngine {
       // Update the board, then
       // Switch players, then
       // Back to start
-
     this.board = this.setupBoard(this.rules);
     this.waitForPlayers()
     .then(res => console.log(res))
     .catch(rej => console.log(rej));
   }
 
+  chooseRules() {
+    return new Promise( (resolve, reject ) => {
+      
+    });
+  }
+
+  // Will poll the number of tracked players and start a game when there's enough. 
   waitForPlayers() {
     return new Promise( (resolve, reject) => {
       let polls = 0;
+      console.log('Waiting for players...');
       const wait = setInterval( () => {
         polls++;
-        console.log(`Poll ${polls}. Current players: ${this.playerNames.length}. Waiting for ${this.rules.players} players...`);
         if (this.enoughPlayers()) {
           clearInterval(wait);
           resolve('Enough players!');
@@ -85,15 +90,6 @@ class GameEngine {
     console.log('game started');
   }
 
-  loadRulesets() {
-    return require('../constants/rulesets');
-  }
-
-  // For now, just set the default ruleset.
-  configureRules() {
-    return this.rulesets.defaultRuleset;
-  }
-
   setupBoard(rules) {
     return new Board(rules.boardType);
   }
@@ -103,7 +99,6 @@ class GameEngine {
     const id = socket.id;
     if (!this.players[id]) {
       this.players[id] = { socket };
-      socket.emit('tracked');
     } else {
       throw new Error('Duplicate socket attempted');
     }
@@ -114,26 +109,7 @@ class GameEngine {
     delete this.players[socket.id];
   }
 
-  // Attach a player to that user's socket.
-  attachPlayerToSocket(socket, username) {
-    try {
-      this.players[socket.id]['username'] = username;
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
-  // Check if a given socket has a username attached.
-  socketHasUsername(socket) {
-    return this.players[socket.id].username ? true : false;
-  }
-
-  get playerNames() {
-    // Return an array containing the names of all players tracked in the engine
-    return Object.values(this.players)
-      .filter(player => player.username)
-      .map(player => player.username);
-  }
 }
 
 module.exports = GameEngine;

@@ -1,6 +1,7 @@
 const initDevTools = function(socket) {
 
   const $debug_register = $('#debug_register');
+  const $debug_startGame = $('#debug_startGame');
   const $debug_updateBoard = $('#debug_updateBoard');
   const $debug_login1 = $('#debug_login1');
   const $debug_login2 = $('#debug_login2');
@@ -8,6 +9,11 @@ const initDevTools = function(socket) {
   $debug_updateBoard.click(event => {
     event.preventDefault();
     socket.emit('request board update');
+  });
+
+  $debug_startGame.click(event => {
+    event.preventDefault();
+    socket.emit('new game');
   });
 
   $debug_register.click(event => {

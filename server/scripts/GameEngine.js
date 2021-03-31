@@ -47,6 +47,10 @@ class GameEngine {
     .then(player => addPlayer(player, socket))
     .catch(err => this.db.logError(err));
 
+
+    // Configure rules
+    this.rules = this.chooseRules();
+
     // Get the board initialized
     this.board = this.setupBoard(this.rules);
   }
@@ -65,9 +69,15 @@ class GameEngine {
   }
 
   chooseRules() {
-    return new Promise( (resolve, reject ) => {
-      
-    });
+    // For now, just return a default board.
+    return {
+      board: 'default',
+      players: 2,
+    }
+  }
+
+  setupBoard(rules) {
+    return new Board(rules.boardType);
   }
 
   enoughPlayers() {
@@ -75,11 +85,17 @@ class GameEngine {
   }
 
   runGame() {
+    // Get players to set up boards, then
+    // Choose first player, then
+    // Start game loop
+      // Player sends move, then
+      // Validate the move, then
+      // Check for game end, then
+        // Go to postgame if game is over
+      // Update the board, then
+      // Switch players, then
+      // Back to start
     console.log('game started');
-  }
-
-  setupBoard(rules) {
-    return new Board(rules.boardType);
   }
 
 }

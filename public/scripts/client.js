@@ -55,6 +55,10 @@ $( document ).ready( function() {
   socket.on('joinable game', ({id, host}) => {
     console.log(`new joinable game ${id} from ${host}`);
   });
+  
+  socket.on('joined game', id => {
+    console.log(`joined game successfully! Game ID:${id}`);
+  });
 
   socket.on('tracked', () => alert('tracked!'));
 

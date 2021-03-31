@@ -89,6 +89,18 @@ io.on('connection', socket => {
     }
   });
 
+  socket.on('join game attempt', gameID => {
+    const engine = games[gameID];
+    const playerID = loggedInUsers[socket.id].id
+    if (engine.enoughPlayers()) {
+      socket.emit('game full');
+      return;
+    }
+    DataHelpers.getPlayer(playerID)
+    .then(player => engine.addPlayer(player, socket))
+    .catch(err => console.log(err));
+  });
+
   socket.on('disconnect', () => {
     const socketID = socket.id;
     if (loggedInUsers[socketID]) {

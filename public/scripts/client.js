@@ -28,7 +28,8 @@ $( document ).ready( function() {
     event.preventDefault();
     const $target = $(event.target);
     if ($target.hasClass('gameEntry')) {
-      socket.emit('join request', id);
+      const id = $target.attr('id');
+      socket.emit('join game attempt', id);
     }
   })
 

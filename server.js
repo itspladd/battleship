@@ -29,6 +29,10 @@ app.get('/loggedIn', (req, res) => {
   res.json(loggedInUsers);
 });
 
+app.get('/games', (req, res) => {
+  res.json(games);
+});
+
 app.get('/errors', (req, res) => {
   res.json(db.errors);
 });
@@ -68,9 +72,13 @@ io.on('connection', socket => {
 
   // Create and track a new game with the socket as the host.
   socket.on('new game', () => {
-    const engine = new GameEngine(DataHelpers, socket);
-    const id = games.length;
-    games[id] = {id, engine};
+    const hostID = loggedInUsers[socket.id].id;
+    const engine = new GameEngine(DataHelpers, socket, hostID);
+    let gameID;
+    do {
+      gameID = randomString(8);
+    } while (games[gameID]);
+    games[gameID] = {gameID, engine};
   });
 
   socket.on('request board update', () => {

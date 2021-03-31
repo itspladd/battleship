@@ -45,6 +45,7 @@ class GameEngine {
     //Add the first player
     this.db.getPlayer(hostID)
     .then(player => addPlayer(player, socket))
+    .catch(err => this.db.logError(err));
     // Wait for players, then
     // Get both players to set up boards, then
     // Choose first player, then
@@ -66,6 +67,13 @@ class GameEngine {
     const id = player.id;
     const username = player.username;
     this.players.push = {id, username, socket};
+    this.checkGameStart();
+  }
+
+  checkGameStart() {
+    if(this.enoughPlayers()) {
+      this.runGame();
+    };
   }
 
   chooseRules() {
@@ -98,7 +106,7 @@ class GameEngine {
     return this.playerNames.length === this.rules.players;
   }
 
-  startGame() {
+  runGame() {
     console.log('game started');
   }
 

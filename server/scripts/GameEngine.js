@@ -33,11 +33,12 @@ class GameEngine {
    * 
    */
   
-  constructor(DataHelpers, socket, hostID) {
+  constructor(DataHelpers, gameID, socket, hostID) {
     // Players are tracked by their socket ID.
     this.pollFrequency = 1000; // How often to poll, in ms
     this.timeoutDuration = 300; // How long till timeout, in s
     this.db = DataHelpers;
+    this.id = gameID;
     this.hostSocket = socket;
     this.hostID = hostID;
     this.players = [];
@@ -47,6 +48,8 @@ class GameEngine {
     .then(player => addPlayer(player, socket))
     .catch(err => this.db.logError(err));
 
+    // Let others know a new game started
+    this.sendNewGameEvent();
 
     // Configure rules
     this.rules = this.chooseRules();
@@ -56,6 +59,7 @@ class GameEngine {
   }
 
   addPlayer(player, socket) {
+    // TODO: What if there's already enough players?
     const id = player.id;
     const username = player.username;
     this.players.push = {id, username, socket};
@@ -66,6 +70,10 @@ class GameEngine {
     if(this.enoughPlayers()) {
       this.runGame();
     };
+  }
+
+  sendNewGameEvent() {
+    this.hostSocket.broadcast.emit('joinable game', this.gameID);
   }
 
   chooseRules() {

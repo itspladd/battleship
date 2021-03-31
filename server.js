@@ -73,12 +73,12 @@ io.on('connection', socket => {
   // Create and track a new game with the socket as the host.
   socket.on('new game', () => {
     const hostID = loggedInUsers[socket.id].id;
-    const engine = new GameEngine(DataHelpers, socket, hostID);
     let gameID;
     do {
       gameID = randomString(8);
     } while (games[gameID]);
-    games[gameID] = {gameID, engine};
+    const engine = new GameEngine(DataHelpers, gameID, socket, hostID);
+    games[gameID] = engine;
   });
 
   socket.on('request board update', () => {

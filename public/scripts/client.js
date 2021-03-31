@@ -60,6 +60,4 @@ $( document ).ready( function() {
     console.log(`joined game successfully! Game ID:${id}`);
   });
 
-  socket.on('tracked', () => alert('tracked!'));
-
 });

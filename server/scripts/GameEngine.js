@@ -34,9 +34,6 @@ class GameEngine {
    */
   
   constructor(DataHelpers, gameID, socket, hostID) {
-    // Players are tracked by their socket ID.
-    this.pollFrequency = 1000; // How often to poll, in ms
-    this.timeoutDuration = 300; // How long till timeout, in s
     this.db = DataHelpers;
     this.id = gameID;
     this.hostSocket = socket;

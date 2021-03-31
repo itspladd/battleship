@@ -52,6 +52,10 @@ $( document ).ready( function() {
     drawBoard(tiles, $board);
   });
 
+  socket.on('joinable game', ({id, host}) => {
+    console.log(`new joinable game ${id} from ${host}`);
+  });
+
   socket.on('tracked', () => alert('tracked!'));
 
 });

@@ -75,7 +75,7 @@ io.on('connection', socket => {
     const hostID = loggedInUsers[socket.id].id;
     let gameID;
     do {
-      gameID = randomString(8);
+      gameID = hlp.randomGameId();
     } while (games[gameID]);
     const engine = new GameEngine(DataHelpers, gameID, socket, hostID);
     games[gameID] = engine;

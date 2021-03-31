@@ -2,6 +2,10 @@ const randomUserId = () => {
   return `p${randomString(8)}`;
 }
 
+const randomGameId = () => {
+  return `g${randomString(8)}`;
+}
+
 // Generates a random integer between two values.
 const randInt = (min, max) => {
   const range = (max - min) + 1;
@@ -31,5 +35,6 @@ const trackLoggedInPlayer = (player, socket, trackingObj) => {
 
 module.exports = {
   randomUserId,
+  randomGameId,
   trackLoggedInPlayer,
 };

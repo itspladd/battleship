@@ -45,7 +45,7 @@ class GameEngine {
 
     //Add the first player
     this.db.getPlayer(hostID)
-    .then(player => addPlayer(player, socket))
+    .then(player => this.addPlayer(player, socket))
     .catch(err => this.db.logError(err));
 
     // Let others know a new game started
@@ -63,6 +63,7 @@ class GameEngine {
     const id = player.id;
     const username = player.username;
     this.players.push = {id, username, socket};
+    socket.emit('joined game', this.id);
     this.checkGameStart();
   }
 
@@ -73,23 +74,25 @@ class GameEngine {
   }
 
   sendNewGameEvent() {
-    this.hostSocket.broadcast.emit('joinable game', this.gameID);
+    this.hostSocket.broadcast.emit('joinable game', { id: this.id, host: this.hostID});
   }
 
   chooseRules() {
-    // For now, just return a default board.
+    // For now, just return a hard-coded default board.
     return {
-      board: 'default',
+      board: {
+        dimensions: [10, 10],
+      },
       players: 2,
     }
   }
 
   setupBoard(rules) {
-    return new Board(rules.boardType);
+    return new Board(rules.board);
   }
 
   enoughPlayers() {
-    return this.playerNames.length === this.rules.players;
+    return this.players.length === this.rules.players;
   }
 
   runGame() {

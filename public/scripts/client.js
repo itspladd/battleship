@@ -5,7 +5,6 @@ $( document ).ready( function() {
   const $users = $('#users');
   const $startGame = $('#stepForward');
   const $login = $('#loginForm');
-  const $register = $('#register');
   const $nameField = $('#inputName');
   const devTools = initDevTools(socket);
 
@@ -24,26 +23,20 @@ $( document ).ready( function() {
     }
   });
 
-  $register.click(event => {
-    event.preventDefault();
-    const username = $nameField.val();
-    if (username) {
-      socket.emit('registration attempt', { username });
-    }
-  });
-
   socket.on('user list', userList => {
-    userList.forEach(username => {
-      $users.append($(`<li id="${username}">${username}</li>`));
+    Object.values(userList).forEach(user => {
+      addUserEntry(user, $users)
     });
   });
   
-  socket.on('user joined', username => {
-    $users.append($(`<li id="${username}">${username}</li>`));
+  socket.on('user joined', player => {
+    addUserEntry(player, $users)
   });
   
-  socket.on('user left', username => {
-    $(`#${username}`).remove();
+  // Remove the item with the ID of the player's username
+  socket.on('user left', user => {
+    console.log(`removing #${user.id}`)
+    $(`#${user.id}`).remove();
   });
 
   // Remove login button once the client has successfully logged in

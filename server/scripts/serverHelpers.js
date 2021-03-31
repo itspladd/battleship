@@ -23,6 +23,13 @@ const randomString = (length = 6) => {
   return str;
 };
 
+const trackLoggedInPlayer = (player, socket, trackingObj) => {
+  const id = player.id;
+  const username = player.username;
+  trackingObj[socket.id] = { id, username};
+};
+
 module.exports = {
   randomUserId,
+  trackLoggedInPlayer,
 };

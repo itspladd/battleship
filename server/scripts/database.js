@@ -10,7 +10,7 @@ const database = {
     },
     'p1': {
       id: 'p1',
-      username: 'Trapezius Stoneglutes',
+      username: 'Trapezius',
       email: 'contact@petalsworn.death.clan',
       password: 'g0dde$$_K1ng', // TODO: Hash it
       gameHistory: [], // Array of game IDs

@@ -25,23 +25,28 @@ app.get('/players', (req, res) => {
   res.json(db.players);
 });
 
+app.get('/loggedIn', (req, res) => {
+  res.json(loggedInUsers);
+});
+
 app.get('/errors', (req, res) => {
   res.json(db.errors);
 });
 
 io.on('connection', socket => {
   console.log('connected!');
-  //socket.emit('user list', engine.playerNames);
+  socket.emit('user list', loggedInUsers);
   
   // When this socket logs in, send their name to the list of users.
   // TODO: Flesh out user validation.
   socket.on('login attempt', username => {
-    if (DataHelpers.validateLogin(username)) {
-      
-      loggedInUsers[socket.id] = username;
+    DataHelpers.validateLogin(username)
+    .then(player => {
+      hlp.trackLoggedInPlayer(player, socket, loggedInUsers)
       socket.emit('login successful');
-      io.emit('user joined', username);
-    }
+      io.emit('user joined', loggedInUsers[socket.id]);
+    })
+    .catch(err => console.log(err));
   });
 
   socket.on('registration attempt', data => {
@@ -54,8 +59,8 @@ io.on('connection', socket => {
     const profile = { username, id, email, password, gameHistory }
     DataHelpers.validateRegistration(profile)
     .then(profile => DataHelpers.savePlayer(profile))
-    .then(() => {
-      loggedInUsers[socket.id] = profile.id;
+    .then(player => {
+      hlp.trackLoggedInPlayer(player, socket, loggedInUsers)
       socket.emit('registration successful');
     })
     .catch(err => console.log(err));
@@ -77,8 +82,16 @@ io.on('connection', socket => {
   });
 
   socket.on('disconnect', () => {
-    if (loggedInUsers[socket.id]) {
-      io.emit('user left', loggedInUsers[socket.id].username);
+    const socketID = socket.id;
+    if (loggedInUsers[socketID]) {
+      const id = loggedInUsers[socketID].id;
+      console.log('disconnecting ', id);
+      DataHelpers.getPlayer(id)
+      .then(player => {
+        delete loggedInUsers[socketID];
+        io.emit(`user left`, player)
+      })
+      .catch(err => console.log(err));
     }
   });
 });

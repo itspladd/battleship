@@ -19,7 +19,7 @@ module.exports = function makeDataHelpers(db) {
           id = newPlayer.id;
           db.players[id] = { ...newPlayer }; // Pass in all key/value pairs
           console.log(`New player '${newPlayer.username}' added!`)
-          resolve(id);
+          resolve(newPlayer);
         }, 1000);
       });
     },
@@ -29,20 +29,21 @@ module.exports = function makeDataHelpers(db) {
         console.log(`retrieving player ${id}...`);
         // Simulating a slight delay, replace the timeout with the db interaction
         setTimeout( () => {
+          console.log('Got player: ', db.players[id]);
           resolve(db.players[id]);
         }, 400);
       })
     },
 
-    // Resolves with the matched user ID. Rejects with an error.
-    validateLogin: function(credentials) {
+    // Resolves with the matched Player object. Rejects with an error.
+    validateLogin: function(username) {
       return new Promise( (resolve, reject) => {
         console.log(`validating login for ${username}...`);
         // Simulating a slight delay, replace the timeout with the db interaction
         setTimeout( () => {
           for (const id in db.players) {
             if (db.players[id].username === username) {
-              resolve(id);
+              resolve(db.players[id]);
               return;
             }
           }

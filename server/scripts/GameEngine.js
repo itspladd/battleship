@@ -38,7 +38,13 @@ class GameEngine {
     this.pollFrequency = 1000; // How often to poll, in ms
     this.timeoutDuration = 300; // How long till timeout, in s
     this.db = DataHelpers;
-    this.players = {};
+    this.hostSocket = socket;
+    this.hostID = hostID;
+    this.players = [];
+
+    //Add the first player
+    this.db.getPlayer(hostID)
+    .then(player => addPlayer(player, socket))
     // Wait for players, then
     // Get both players to set up boards, then
     // Choose first player, then
@@ -54,6 +60,12 @@ class GameEngine {
     this.waitForPlayers()
     .then(res => console.log(res))
     .catch(rej => console.log(rej));
+  }
+
+  addPlayer(player, socket) {
+    const id = player.id;
+    const username = player.username;
+    this.players.push = {id, username, socket};
   }
 
   chooseRules() {
@@ -93,22 +105,6 @@ class GameEngine {
   setupBoard(rules) {
     return new Board(rules.boardType);
   }
-
-  // Add a socket ID to the list of sockets tracked by the engine.
-  trackSocket(socket) {
-    const id = socket.id;
-    if (!this.players[id]) {
-      this.players[id] = { socket };
-    } else {
-      throw new Error('Duplicate socket attempted');
-    }
-  }
-
-  // Remove a player from the list.
-  removeSocket(socket) {
-    delete this.players[socket.id];
-  }
-
 
 }
 

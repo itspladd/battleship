@@ -74,6 +74,10 @@ class GameEngine {
     this.hostSocket.broadcast.emit('joinable game', { id: this.id, host: this.hostID});
   }
 
+  sendClosedGameEvent() {
+    this.hostSocket.broadcast.emit('game closed', { id: this.id });
+  }
+
   chooseRules() {
     // For now, just return a hard-coded default board.
     return {

@@ -3,12 +3,13 @@ $( document ).ready( function() {
   const $game = $('#game');
   const $board = $('.board');
   const $users = $('#users');
+  const $games = $('#games');
   const $startGame = $('#stepForward');
   const $login = $('#loginForm');
   const $nameField = $('#inputName');
   const devTools = initDevTools(socket);
 
-
+// TODO: Split into Lobby Events and Game Events files
 
   $startGame.click(event => {
     event.preventDefault();
@@ -54,6 +55,11 @@ $( document ).ready( function() {
 
   socket.on('joinable game', ({id, host}) => {
     console.log(`new joinable game ${id} from ${host}`);
+    addGameEntry(id, $games);
+  });
+
+  socket.on('game closed', ({id, host}) => {
+    console.log(`game ${id} closed`);
   });
   
   socket.on('joined game', id => {

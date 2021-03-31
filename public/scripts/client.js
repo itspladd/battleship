@@ -3,7 +3,7 @@ $( document ).ready( function() {
   const $game = $('#game');
   const $board = $('.board');
   const $users = $('#users');
-  const $games = $('#games');
+  const $gameList = $('#gameList');
   const $startGame = $('#stepForward');
   const $login = $('#loginForm');
   const $nameField = $('#inputName');
@@ -23,6 +23,14 @@ $( document ).ready( function() {
       socket.emit('login attempt', username);
     }
   });
+
+  $gameList.click(event => {
+    event.preventDefault();
+    const $target = $(event.target);
+    if ($target.hasClass('gameEntry')) {
+      socket.emit('join request', id);
+    }
+  })
 
   socket.on('user list', userList => {
     Object.values(userList).forEach(user => {
@@ -55,7 +63,7 @@ $( document ).ready( function() {
 
   socket.on('joinable game', ({id, host}) => {
     console.log(`new joinable game ${id} from ${host}`);
-    addGameEntry(id, $games);
+    addGameEntry(id, $gameList);
   });
 
   socket.on('game closed', ({id, host}) => {

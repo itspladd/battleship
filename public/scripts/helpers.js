@@ -21,9 +21,11 @@ const drawBoard = (tiles, $target) => {
 };
 
 const addUserEntry = (user, $destination) => {
-  $destination.append($(`<li id="${user.id}">${user.username}</li>`));
+  const $userEntry = $('<li>').attr('id', user.id).text(user.username);
+  $destination.append($userEntry);
 };
 
 const addGameEntry = (id, $destination) => {
-  $destination.append($(`<li id="${id}">Game ${id}</li>`));
+  const $gameEntry = $('<li class="gameEntry">').attr('id', id).text(id);
+  $destination.append($gameEntry);
 };

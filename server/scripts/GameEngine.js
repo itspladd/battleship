@@ -71,7 +71,9 @@ class GameEngine {
   }
 
   sendNewGameEvent() {
-    this.hostSocket.broadcast.emit('joinable game', { id: this.id, host: this.hostID});
+    // Send a joinable game event to every socket except the host.
+    this.hostSocket.broadcast
+    .emit('joinable game', { id: this.id, host: this.hostID});
   }
 
   sendClosedGameEvent() {

@@ -1,5 +1,6 @@
 # battleship
 An online, multiplayer Battleship clone.
 
-## CURRENTLY IN DEVELOPMENT
-Check out the **Issues** tab to see what I'm working on!
+## NOT CURRENTLY IN DEVELOPMENT.
+
+This project was started as one of the stretch projects with Lighthouse Labs, back when all I knew was a little bit of jQuery and some Express. I'm working on building a battleship game that aligns more with my current skills over at https://github.com/itspladd/react-3d-battleship!
